@@ -15,7 +15,3 @@ client.connect().then(function(){
 })
 
 module.exports = client;
-
-function connectToDB(){
-    
-}
