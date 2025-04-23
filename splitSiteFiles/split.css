@@ -1,0 +1,34 @@
+body {
+  font-family: "Lucida Console", Monaco, Garamond;
+  background-color: #e9f6f9;
+}
+
+#header {
+  background-color: lightblue;
+  width: 100% ;
+}
+
+#header h1 {
+  display: inline-block;
+  background-color: #fffcd4;
+  padding: 5px;
+  margin: 5px;
+}
+
+#login {
+  float: right;
+}
+
+#homePageContent {
+  width: 99%;
+  height: 90%;
+  background-color: #dde7eb;
+  margin: auto;
+  
+}
+
+/* a thin border to mimic sleekness, thin lines are all the rage now *\
+button {
+  padding: 3px;
+  border: 0.5px; 
+}
