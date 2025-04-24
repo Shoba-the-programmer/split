@@ -14,7 +14,13 @@ client.connect().then(function(){
     client.query("SELECT username FROM users LIMIT 1", function (err, result, fields) {
         if (err) throw err;
         console.log(result);
-        un = result;
+        //okay okay so the result inaan object, the username is 0
+        
+        const username = result[0].username;
+                app.get('/', (req, res) => {
+                    res.send(username);
+                });
+
       });
 }).catch(function(err){
     console.log(err,"Failed to connect to Database")
