@@ -13,5 +13,15 @@
 
 <p id="showdbinformation"> d </p>
 
+<script>
+    // Fetch the result from the server and display it in the <p> element
+    fetch('/')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('result').showdbinformation = data;
+      })
+      .catch(error => console.error('Error:', error));
+  </script>
+
 </body>
 </html>
