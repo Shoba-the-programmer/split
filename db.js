@@ -11,7 +11,7 @@ const client = new Client(
 )
 client.connect().then(function(){
     console.log("Database Connected Successfully!")
-    client.query("SELECT username FROM split LIMIT 1", function (err, result, fields) {
+    client.query("SELECT username FROM users LIMIT 1", function (err, result, fields) {
         if (err) throw err;
         console.log(result);
         un = result;
