@@ -18,7 +18,7 @@
     fetch('/')
       .then(response => response.text())
       .then(data => {
-        alert("response is reached")
+        alert("response is reached");
         document.getElementById('result').showdbinformation = data;
       })
       .catch(error => console.error('Error:', error));
