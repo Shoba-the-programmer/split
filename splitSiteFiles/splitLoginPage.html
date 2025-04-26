@@ -4,13 +4,31 @@
 
 <div id="header"> <h1 onclick="gotoWebpage(homeUrl)"> Split! </h1> </div>
 
+<!-- LOGIN SECTION -->
 <div id="loginInfo"> 
-    <input type="text"> <br>
+    <h2> Login</h2>
+    <input class="accountInfo_entry" id="login_username" type="text" placeholder="Username" required> <br>
     <br>
-    <input type="text"> <br>
+    <input class="accountInfo_entry" is="login_password" type="text" placeholder="Password" required> <br>
+    <p id="alert"></p>
 
-<button onclick="gotoWebpage(writerPortalUrl)"> Login </button> <!-- for now it goes straight to the writer's portal -->
-<button> Create Account </button>
+    <button onclick="check_login_entry()"> Login </button> <!-- for now it goes straight to the writer's portal -->
+    <br>
+    <p> Or <button onclick="trigger_CA_overlay()"> Create Account </button> if you don't have one yet :]</p>
+</div>
+
+
+<!-- CREATE ACCOUNT OVERLAY-->
+<div id="create_account_overlay">
+<!-- this will act as a pop up overlay called when the create account button is used-->
+    <div id="createAccount_data">
+        <h3> Create an Account</h3>
+        <input class="accountInfo_entry" id="username" type="text"> <br>
+        <br>
+        <input class="accountInfo_entry" id="login_passz" type="text"> <br> <br>
+        <input class="accountInfo_entry" id="login_passz" type="text"> <br>
+    </div>
+    
 </div>
 
 </body>
