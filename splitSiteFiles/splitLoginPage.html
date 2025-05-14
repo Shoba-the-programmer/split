@@ -9,7 +9,7 @@
     <h2> Login</h2>
     <input class="accountInfo_entry" id="login_username" type="text" placeholder="Username" required> <br>
     <br>
-    <input class="accountInfo_entry" is="login_password" type="text" placeholder="Password" required> <br>
+    <input class="accountInfo_entry" is="login_password" type="password" placeholder="Password" required> <br>
     <p id="alert"></p>
 
     <button onclick="check_login_entry()"> Login </button> <!-- for now it goes straight to the writer's portal -->
@@ -23,10 +23,11 @@
 <!-- this will act as a pop up overlay called when the create account button is used-->
     <div id="createAccount_data">
         <h3> Create an Account</h3>
-        <input class="accountInfo_entry" id="username" type="text"> <br>
+        <input class="accountInfo_entry" id="username" type="text"  placeholder="Username"> <br>
         <br>
-        <input class="accountInfo_entry" id="login_passz" type="text"> <br> <br>
-        <input class="accountInfo_entry" id="login_passz" type="text"> <br>
+        <input class="accountInfo_entry" id="login_passz" type="text"  placeholder="Password"> <br> <br>
+        <input class="accountInfo_entry" id="login_passz" type="text"  placeholder="Retype Password"> <br> <br>
+        <button style="margin:3px; padding:2px;"> Create Account</button>
     </div>
     
 </div>

@@ -1,8 +1,12 @@
+//this file holds navigation and login functions
 var homeUrl = "splitHomepage.html";
 var loginUrl = "splitLoginPage.html";
 var publishUrl = "splitPublishPage.html";
 var writerPortalUrl = "splitWritersPage.html";
 var chapterWritingUrl = "bookchapterpage.html";
+
+var test_username = "sigma";
+var test_password = "zhetaXDC"
 
 function gotoWebpage(page){
     window.location.href = page;
@@ -25,8 +29,9 @@ function is_empty(thing){
     }
 }
 
-function checklogininfo(un,pass){
+function doesUserExist(un,pass){
     //compare the login information to the data stored in the database
+    return false;
 }
 
 function check_login_entry(){
@@ -37,6 +42,11 @@ function check_login_entry(){
     if (is_empty(un) == true || is_empty(pass) == true){
         //if either is empty then alert that it's empty
         badDataAlert.innerText = "You haven't entered a username and password!";
+        //break
     }
-
+    //then check against user info in database 
+    else if(!doesUserExist(un,pass)){
+        //if its false then the user doesnt exist or there was an error
+        badDataAlert.innerText ="";
+    } 
 }
