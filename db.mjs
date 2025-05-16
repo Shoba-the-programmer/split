@@ -3,8 +3,11 @@
 //const { Client } = require('pg');
 //import { Client } from '..node_modules/pg';
 import { Client } from 'pg';
+import dotenv from 'dotenv';
+dotenv.config();
 
 let un = null;
+
 const client = new Client(
     {
         user: "postgres",
@@ -13,17 +16,16 @@ const client = new Client(
         port: "5432",
         password: "root"
     }
-)
+) // not gonna be used online so wont really matter if it stays?
 
-const onlineClient = new Client(
-    {
-        user: "the_splitter",
-        host: "dpg-d0jipqbe5dus73cigmhg-a",
-        database: "split_online",
-        port: "5432",
-        password: "khDUNz0oMcqTCwEyTIIgRmO6N1TMWe8u"
-    }
-)
+const onlineClient = new Client({
+    user: process.env.PG_USER,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DATABASE,
+    port: process.env.PG_PORT,
+    password: process.env.PG_PASSWORD
+}); //security , no checking for u :P
+
 
 //const express = require('express');
 //import express from 'express';
@@ -33,6 +35,7 @@ const onlineClient = new Client(
 
 // --- VARIABLES END ---
 
+/*
 export function online_db_connect() {
     onlineClient.connect().then(function () {
         console.log("Database Connected Successfully!")
@@ -41,7 +44,20 @@ export function online_db_connect() {
         console.log(err, "Failed to connect to Database")
     })
 }
+*/
 
+export async function online_db_connect() {
+    try {
+        await onlineClient.connect();
+        console.log("Database Connected Successfully!");
+        return true; // Indicates a successful connection
+    } catch (error) {
+        console.error("Failed to connect to Database:", error);
+        return false; // Indicates failure
+    }
+}
+
+/*
 export function db_connect() {
     client.connect().then(function () {
         console.log("Database Connected Successfully!")
@@ -50,6 +66,7 @@ export function db_connect() {
         console.log(err, "Failed to connect to Database")
 })
 }
+*/
 
   /*
 exports.online_db_connect = function() {
@@ -72,8 +89,20 @@ exports.db_connect = function() {
 }
 */
 
+/*
 export async function getusername() {
     return client.query("SELECT username FROM Users LIMIT 1")
+}
+    */
+
+export async function getusername() {
+    try {
+        const result = await onlineClient.query("SELECT username FROM Users LIMIT 1");
+        return result.rows[0].username; // to get just the username!
+    } catch (error) {
+        console.error("Error fetching username:", error);
+        return null;
+    }
 }
 
 /*

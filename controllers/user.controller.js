@@ -52,7 +52,7 @@ exports.checklogins = async function login(event){
 */
 
 // controllers/user.controller.js
-import { getusername } from "../splitSiteFiles/db.mjs";
+import { getusername } from "../db.mjs";
 
 export function createUser(req, res) {
     res.status(201).json({
