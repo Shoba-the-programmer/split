@@ -3,8 +3,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const pg = require('pg'); //for database work
-const {db_connect} = require('./db.js');
-const {online_db_connect} = require('./db.js');
+const {db_connect} = require('./splitSiteFiles/db.js');
+const {online_db_connect} = require('./splitSiteFiles/db.js');
 const userRoute = require("./routes/user.route.js")
 
 const port = process.env.PORT || 8080;
@@ -13,7 +13,7 @@ const port = process.env.PORT || 8080;
 app.use(express.static(__dirname+"/splitSiteFiles"));
 
 // set the home page route
-app.get('/', 
+app.get('/',
     function(req, res) {
     res.sendFile('splitHomepage.html', {'root': './splitSiteFiles'});
 });

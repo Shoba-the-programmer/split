@@ -1,4 +1,4 @@
-const {getusername} = require("../db")
+const {getusername} = require("../splitSiteFiles/db")
 exports.createUser =  function (req, res) {
     
     res.status(201).json({
