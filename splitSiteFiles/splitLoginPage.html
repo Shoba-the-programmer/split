@@ -25,13 +25,14 @@
     <div id="createAccount_data">
         <h3> Create an Account</h3>
         <form onsubmit="createNewUser()">
-        <input class="accountInfo_entry" id="ca_username" type="text"  placeholder="Username" required> <br>
-        <br>
+        <input class="accountInfo_entry" id="ca_username" type="text"  placeholder="Username" required> <br> <br>
         <input class="accountInfo_entry" id="ca_pass" type="password"  placeholder="Password" required> <br> <br>
         <input class="accountInfo_entry" id="retype_ca_pass" type="password"  placeholder="Retype Password" required> <br> <br>
         <button type="submit" style="margin:3px; padding:2px;"> Create Account</button>
         </form> 
     </div>
+</div>
+
 
 <script>
     async function login(event) {
@@ -67,12 +68,12 @@
 
       async function createNewUser() {
         let un = document.getElementById("ca_username").value;
-        let pass1 = document.getElementById("ca_pass").value;;
+        let pass1 = document.getElementById("ca_pass").value;
         let pass2 = document.getElementById("retype_ca_pass").value;
         //required already prevents them from being sent so :P
         if (pass1!=pass2){
             alert("Passwords do not match");
-            return false;
+            return;
         }
       try {
         const response = await fetch('/create-user', {
@@ -88,12 +89,12 @@
         }
       } catch (error) {
         alert("Error: " + error);
+        //Error: TypeError: Failed to fetch - hmmm
       }
 
     }
 
     </script>    
-</div>
 
 </body>
 </html>
