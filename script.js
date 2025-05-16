@@ -1,12 +1,18 @@
 //original code repurposed from the contributor 'jrichardsz' on StackOverflow
 //const express = require('express');
 import express from 'express';
-const path = require('path');
+//const path = require('path');
+import path from 'node:path';
 const app = express();
-const pg = require('pg'); //for database work
-const {db_connect} = require('./splitSiteFiles/db.mjs');
-const {online_db_connect} = require('./splitSiteFiles/db.mjs');
-const userRoute = require("./routes/user.route.js")
+//const pg = require('pg'); //for database work
+import pg from 'pg';
+//const {db_connect} = require('./splitSiteFiles/db.mjs');
+//const {online_db_connect} = require('./splitSiteFiles/db.mjs');
+//const userRoute = require("./routes/user.route.js")
+
+import { db_connect } from './splitSiteFiles/db.mjs';
+import { online_db_connect } from './splitSiteFiles/db.mjs';
+import userRoute from './routes/user.route.js'
 
 const port = process.env.PORT || 8080;
 
