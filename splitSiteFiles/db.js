@@ -39,8 +39,7 @@ export function online_db_connect() {
 }
 
 export function db_connect() {
-
-    Client.connect().then(function () {
+    client.connect().then(function () {
         console.log("Database Connected Successfully!")
 
     }).catch(function (err) {
