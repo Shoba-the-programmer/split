@@ -13,9 +13,9 @@
 <div id="newestStoriesTab"></div>
 </div>
 
-<p id="showdbinformation"> d </p>
+<!-- <p id="showdbinformation"> d </p>  -->
 
-<script type="module">
+<script>
     // Fetch the result from the server and display it in the <p> element
   /*  fetch('/')
       .then(response => response.text())
@@ -23,14 +23,18 @@
         document.getElementById('showdbinformation').innerText = data;
       })
       .catch(error => console.error('Error:', error));
-      */
+      
     //run the connect and get username functions then show the username in the paragrapgh area
-    import { parafill } from '../db.js';
-    let para = document.getElementById('showdbinformation');
-    if (para){
-      para.innerText = parafill();
-    }
-    
+    // import { parafill } from '../db.js';
+    fetch("/user").then(function (res) {
+      return res.json()
+    }).then(function(data) {
+      console.log(data)
+      document.getElementById('showdbinformation').innerText = data.data.username;
+    }).catch(function(err){
+      console.error(err)
+    })
+   */
   </script>
 
 </body>

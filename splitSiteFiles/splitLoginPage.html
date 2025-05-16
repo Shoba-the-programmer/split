@@ -6,14 +6,17 @@
 
 <!-- LOGIN SECTION -->
 <div id="loginInfo"> 
-    <h2> Login</h2>
-    <input class="accountInfo_entry" id="login_username" type="text" placeholder="Username" required> <br>
-    <br>
-    <input class="accountInfo_entry" is="login_password" type="password" placeholder="Password" required> <br>
-    <p id="alert"></p>
+    <form onsubmit="login(event)">
+        <h2> Login</h2>
+        <input class="accountInfo_entry" id="login_username" type="text" placeholder="Username" required> <br>
+        <br>
+        <input class="accountInfo_entry" id="login_password" type="password" placeholder="Password" required> <br>
+        <p id="alert"></p>
 
-    <button onclick="check_login_entry()"> Login </button> <!-- for now it goes straight to the writer's portal -->
-    <br>
+        <button type="submit"> Login </button> <!-- for now it goes straight to the writer's portal -->
+        <br>
+    </form>
+
     <p> Or <button onclick="trigger_CA_overlay()"> Create Account </button> if you don't have one yet :]</p>
 </div>
 
@@ -26,7 +29,7 @@
         <input class="accountInfo_entry" id="username" type="text"  placeholder="Username"> <br>
         <br>
         <input class="accountInfo_entry" id="login_passz" type="text"  placeholder="Password"> <br> <br>
-        <input class="accountInfo_entry" id="login_passz" type="text"  placeholder="Retype Password"> <br> <br>
+        <input class="accountInfo_entry" id="retypelogin_passz" type="text"  placeholder="Retype Password"> <br> <br>
         <button style="margin:3px; padding:2px;"> Create Account</button>
     </div>
     

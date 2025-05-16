@@ -31,6 +31,9 @@ function is_empty(thing){
 
 function doesUserExist(un,pass){
     //compare the login information to the data stored in the database
+
+    /*  
+    */
     return false;
 }
 
@@ -50,3 +53,4 @@ function check_login_entry(){
         badDataAlert.innerText ="";
     } 
 }
+
