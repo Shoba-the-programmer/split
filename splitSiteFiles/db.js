@@ -1,4 +1,5 @@
-const { Client } = require('pg');
+//const { Client } = require('pg');
+import { Client } from './pg.js';
 let un = null;
 const client = new Client(
     {
