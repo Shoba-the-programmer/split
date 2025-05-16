@@ -30,7 +30,6 @@ import userRoute from './routes/user.route.js'
 const port = process.env.PORT || 8080;
 
 defineUsersTable(); //on server startup, call the create table function from the db file
-alert("table created kyahh");
 
 
 // make express look in the public directory for assets (css/js/img)
