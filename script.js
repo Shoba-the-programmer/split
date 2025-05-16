@@ -6,7 +6,7 @@ import express from 'express';
 //const path = require('path');
 import path from 'node:path';
 const app = express();
-import { createUsersTable, insertUser } from './db.mjs';
+import { defineUsersTable, insertUser } from './db.mjs';
 //const pg = require('pg'); //for database work
 import pg from 'pg';
 //const {db_connect} = require('./splitSiteFiles/db.mjs');

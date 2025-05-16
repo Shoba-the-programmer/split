@@ -24,13 +24,13 @@
 <!-- this will act as a pop up overlay called when the create account button is used-->
     <div id="createAccount_data">
         <h3> Create an Account</h3>
-        <form>
+        <form onsubmit="createUser()">
         <input class="accountInfo_entry" id="ca_username" type="text"  placeholder="Username" required> <br>
         <br>
         <input class="accountInfo_entry" id="ca_pass" type="password"  placeholder="Password" required> <br> <br>
         <input class="accountInfo_entry" id="retype_ca_pass" type="password"  placeholder="Retype Password" required> <br> <br>
         <button type="submit" style="margin:3px; padding:2px;"> Create Account</button>
-    </form> 
+        </form> 
     </div>
 
 <script>
