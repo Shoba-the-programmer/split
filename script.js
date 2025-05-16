@@ -10,6 +10,13 @@ import pg from 'pg';
 //const {online_db_connect} = require('./splitSiteFiles/db.mjs');
 //const userRoute = require("./routes/user.route.js")
 
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
 import { db_connect } from './splitSiteFiles/db.mjs';
 import { online_db_connect } from './splitSiteFiles/db.mjs';
 import userRoute from './routes/user.route.js'
