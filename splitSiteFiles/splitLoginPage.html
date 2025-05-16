@@ -24,7 +24,7 @@
 <!-- this will act as a pop up overlay called when the create account button is used-->
     <div id="createAccount_data">
         <h3> Create an Account</h3>
-        <form onsubmit="createUser()">
+        <form onsubmit="createNewUser()">
         <input class="accountInfo_entry" id="ca_username" type="text"  placeholder="Username" required> <br>
         <br>
         <input class="accountInfo_entry" id="ca_pass" type="password"  placeholder="Password" required> <br> <br>
@@ -65,7 +65,7 @@
         }
       }
 
-      async function createUser() {
+      async function createNewUser() {
         let un = document.getElementById("ca_username").value;
         let pass1 = document.getElementById("ca_pass").value;;
         let pass2 = document.getElementById("retype_ca_pass").value;

@@ -5,6 +5,7 @@
 import express from 'express';
 //const path = require('path');
 import path from 'node:path';
+import { fileURLToPath } from 'url';
 const app = express();
 import { defineUsersTable, insertUser } from './db.mjs';
 //const pg = require('pg'); //for database work
@@ -29,6 +30,8 @@ import userRoute from './routes/user.route.js'
 const port = process.env.PORT || 8080;
 
 defineUsersTable(); //on server startup, call the create table function from the db file
+alert("table created kyahh");
+
 
 // make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname+"/splitSiteFiles"));
@@ -40,6 +43,8 @@ app.get('/',
 });
 
 app.use(userRoute);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Endpoint to check login credentials
 app.post('/login', async (req, res) => {
@@ -70,6 +75,20 @@ app.post('/create-user', async (req, res) => {
     res.json({ success: true, user });
   } else {
     res.status(500).json({ success: false, message: "Failed to insert user." });
+  }
+});
+
+app.post('/create-user', async (req, res) => {
+  try {
+    const { username, password } = req.body;  // Now req.body will be defined
+  /*  if (!username || !password) {
+      return res.status(400).json({ success: false, message: "Username and password are required." });
+    } */
+    const user = await insertUser(username, password);
+    res.json({ success: user ? true : false, user });
+  } catch (err) {
+    console.error("Error in /create-user:", err);
+    res.status(500).json({ success: false, message: "Internal server error." });
   }
 });
 
@@ -122,7 +141,6 @@ app.listen(port, function() {
   //db_connect();  //moved to here so express listens to both
   console.log('Online Split is running on ' + port);
 });
-
 
 /*
 //console log for testing purposes
