@@ -1,3 +1,5 @@
+//database access file
+
 //const { Client } = require('pg');
 //import { Client } from '..node_modules/pg';
 import { Client } from 'pg';
@@ -24,8 +26,10 @@ const onlineClient = new Client(
 )
 
 //const express = require('express');
-import express from 'express';
-const app = express();
+//import express from 'express';
+//const app = express();
+
+//express uneeded in databse file
 
 // --- VARIABLES END ---
 
@@ -72,12 +76,23 @@ export async function getusername() {
     return client.query("SELECT username FROM Users LIMIT 1")
 }
 
+/*
 export function parafill() {
     let resy = getusername();
     console.log("para information gotten! It is "+resy);
     return resy;
     //return client.query("SELECT username FROM Users LIMIT 1")
 }
+    */
+
+export async function parafill() {
+    let resy = await getusername(); // db accessing is aysnc!!! aaaaaaaa
+    console.log("Para information gotten! It is", resy);
+    return resy;
+}
+
+export { client };
+export { onlineClient };
 
 /*
 exports.getusername = async function (){

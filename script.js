@@ -1,3 +1,5 @@
+//express server code, acting as the midwayy
+
 //original code repurposed from the contributor 'jrichardsz' on StackOverflow
 //const express = require('express');
 import express from 'express';
@@ -9,13 +11,14 @@ import pg from 'pg';
 //const {db_connect} = require('./splitSiteFiles/db.mjs');
 //const {online_db_connect} = require('./splitSiteFiles/db.mjs');
 //const userRoute = require("./routes/user.route.js")
+import { client } from './splitSiteFiles/db.mjs';
+import { onlineClient } from './splitSiteFiles/db.mjs';
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
 
 import { db_connect } from './splitSiteFiles/db.mjs';
 import { online_db_connect } from './splitSiteFiles/db.mjs';
@@ -57,16 +60,19 @@ app.post('/login', async (req, res) => {
   
 //test the online database created on render
 app.listen(port, function() {
-  online_db_connect()
+  online_db_connect();
+  db_connect();  //moved to here so express listens to both
   console.log('Online Split is running on ' + port);
 });
 
 
+/*
 //console log for testing purposes
 app.listen(port, function() {
     db_connect()
     console.log('Split is running on ' + port);
 });
+*/
 
 //taskkill /f /im node.exe
 
