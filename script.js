@@ -1,5 +1,6 @@
 //original code repurposed from the contributor 'jrichardsz' on StackOverflow
-const express = require('express');
+//const express = require('express');
+import express from 'express';
 const path = require('path');
 const app = express();
 const pg = require('pg'); //for database work
