@@ -141,6 +141,42 @@ export async function parafill() {
 export { client };
 export { onlineClient };
 
+//to begin the website and login, the user table must be created
+export async function defineUsersTable() {
+    const createUsersTableQuery = `
+      CREATE TABLE IF NOT EXISTS Users (
+        user_id SERIAL PRIMARY KEY,
+        username VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL
+      );
+    `;
+    try {
+      await onlineClient.query(createUsersTableQuery);
+      console.log("Users table created (or already exists).");
+    } catch (error) {
+      console.error("Error creating Users table:", error);
+    }
+  }
+
+export async function insertUser(username, password) {
+    //this function shld insert a new user into the table post account creation
+    const insertQuery = `
+      INSERT INTO Users (username, password)
+      VALUES ($1, $2)
+      RETURNING *;
+    `;
+    try {
+      const result = await onlineClient.query(insertQuery, [username, password]);
+      console.log("Inserted user:", result.rows[0]);
+      return result.rows[0];
+    } catch (error) {
+      console.error("Error inserting user:", error);
+      return null;
+    }
+  }
+
+
+
 /*
 exports.getusername = async function (){
 

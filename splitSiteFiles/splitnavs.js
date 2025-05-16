@@ -54,3 +54,9 @@ function check_login_entry(){
     } 
 }
 
+function create_account_check(){
+    let un = "";
+    let pass1 = "";
+    let pass2 = "" ;
+
+}

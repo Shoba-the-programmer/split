@@ -6,16 +6,14 @@
 
 <!-- LOGIN SECTION -->
 <div id="loginInfo"> 
-    <form onsubmit="login(event)">
-        <h2> Login</h2>
-        <input class="accountInfo_entry" id="login_username" type="text" placeholder="Username" required> <br>
-        <br>
-        <input class="accountInfo_entry" id="login_password" type="password" placeholder="Password" required> <br>
-        <p id="alert"></p>
+    <h2> Login</h2>
+    <input class="accountInfo_entry" id="login_username" type="text" placeholder="Username" required> <br>
+    <br>
+    <input class="accountInfo_entry" id="login_password" type="password" placeholder="Password" required> <br>
+    <p id="alert"></p>
 
-        <button type="submit"> Login </button> <!-- for now it goes straight to the writer's portal -->
-        <br>
-    </form>
+    <button> Login </button> <!-- for now it goes straight to the writer's portal -->
+    <br>
 
     <p> Or <button onclick="trigger_CA_overlay()"> Create Account </button> if you don't have one yet :]</p>
 </div>
@@ -26,13 +24,75 @@
 <!-- this will act as a pop up overlay called when the create account button is used-->
     <div id="createAccount_data">
         <h3> Create an Account</h3>
-        <input class="accountInfo_entry" id="username" type="text"  placeholder="Username"> <br>
+        <form>
+        <input class="accountInfo_entry" id="ca_username" type="text"  placeholder="Username" required> <br>
         <br>
-        <input class="accountInfo_entry" id="login_passz" type="text"  placeholder="Password"> <br> <br>
-        <input class="accountInfo_entry" id="retypelogin_passz" type="text"  placeholder="Retype Password"> <br> <br>
-        <button style="margin:3px; padding:2px;"> Create Account</button>
+        <input class="accountInfo_entry" id="ca_pass" type="password"  placeholder="Password" required> <br> <br>
+        <input class="accountInfo_entry" id="retype_ca_pass" type="password"  placeholder="Retype Password" required> <br> <br>
+        <button type="submit" style="margin:3px; padding:2px;"> Create Account</button>
+    </form> 
     </div>
-    
+
+<script>
+    async function login(event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+        
+        // Get values from the input fields
+        const username = document.getElementById("login_username").value;
+        const password = document.getElementById("login_password").value;
+        
+        try {
+          // Send a POST request to the "/login" endpoint
+          const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+        
+          const result = await response.json();
+          
+          // Check the response and update the alert <p>
+          if (result.success) {
+            document.getElementById("alert").innerText = "Login successful!";
+            // Optionally redirect to another page:
+            // window.location.href = "/writer-portal";
+          } else {
+            document.getElementById("alert").innerText = "Login failed. Please try again.";
+          }
+        } catch (error) {
+          console.error("Error during login:", error);
+          document.getElementById("alert").innerText = "Error during login: " + error;
+        }
+      }
+
+      async function createUser() {
+        let un = document.getElementById("ca_username").value;
+        let pass1 = document.getElementById("ca_pass").value;;
+        let pass2 = document.getElementById("retype_ca_pass").value;
+        //required already prevents them from being sent so :P
+        if (pass1!=pass2){
+            alert("Passwords do not match");
+            return false;
+        }
+      try {
+        const response = await fetch('/create-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: un, password: pass1 }) //now more users shld be made from create account :]
+        });
+        const result = await response.json();
+        if (result.success) {
+          alert("User inserted: " + JSON.stringify(result.user));
+        } else {
+          alert("Failed to insert user.");
+        }
+      } catch (error) {
+        alert("Error: " + error);
+      }
+
+    }
+
+    </script>    
 </div>
 
 </body>

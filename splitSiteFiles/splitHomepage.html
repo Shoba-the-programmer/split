@@ -13,7 +13,7 @@
 <div id="newestStoriesTab"></div>
 </div>
 
-<button onclick="checkDatabase()">Get Username</button>
+<button onclick="createUser()">Get Username</button>
 
 <script>
   async function checkDatabase() {
@@ -47,6 +47,25 @@
             alert("An error occurred!");
         }
     }
+
+    async function createUser() {
+      try {
+        const response = await fetch('/create-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: "owner", password: "r00t" }) //the first user, me :]
+        });
+        const result = await response.json();
+        if (result.success) {
+          alert("User inserted: " + JSON.stringify(result.user));
+        } else {
+          alert("Failed to insert user.");
+        }
+      } catch (error) {
+        alert("Error: " + error);
+      }
+    }
+    
 </script>
 
 <!-- <p id="showdbinformation"> d </p>  -->

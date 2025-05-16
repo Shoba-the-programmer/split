@@ -6,6 +6,7 @@ import express from 'express';
 //const path = require('path');
 import path from 'node:path';
 const app = express();
+import { createUsersTable, insertUser } from './db.mjs';
 //const pg = require('pg'); //for database work
 import pg from 'pg';
 //const {db_connect} = require('./splitSiteFiles/db.mjs');
@@ -26,6 +27,8 @@ import { online_db_connect } from './db.mjs';
 import userRoute from './routes/user.route.js'
 
 const port = process.env.PORT || 8080;
+
+createUsersTable(); //on server startup, call the create table function from the db file
 
 // make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname+"/splitSiteFiles"));
@@ -58,6 +61,18 @@ app.post('/login', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+// insert new user endpoint
+app.post('/create-user', async (req, res) => {
+  const { username, password } = req.body;
+  const user = await insertUser(username, password);
+  if (user) {
+    res.json({ success: true, user });
+  } else {
+    res.status(500).json({ success: false, message: "Failed to insert user." });
+  }
+});
+
   
   app.post('/getusername', async (req, res) => {
     const { username, password } = req.body;
