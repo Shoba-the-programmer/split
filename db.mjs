@@ -175,7 +175,7 @@ export async function insertUser(username, password) {
     }
   }
 
-export {defineUsersTable};
+//export {defineUsersTable};
 //export {insertUser};
 
 /*
