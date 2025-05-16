@@ -29,6 +29,26 @@ const app = express();
 
 // --- VARIABLES END ---
 
+export function online_db_connect() {
+    onlineClient.connect().then(function () {
+        console.log("Database Connected Successfully!")
+
+    }).catch(function (err) {
+        console.log(err, "Failed to connect to Database")
+    })
+}
+
+export function db_connect() {
+
+    Client.connect().then(function () {
+        console.log("Database Connected Successfully!")
+
+    }).catch(function (err) {
+        console.log(err, "Failed to connect to Database")
+})
+}
+
+  /*
 exports.online_db_connect = function() {
     onlineClient.connect().then(function () {
         console.log("Database Connected Successfully!")
@@ -37,6 +57,7 @@ exports.online_db_connect = function() {
         console.log(err, "Failed to connect to Database")
     })
 }
+    
 
 exports.db_connect = function() {
     client.connect().then(function () {
@@ -46,7 +67,20 @@ exports.db_connect = function() {
         console.log(err, "Failed to connect to Database")
     })
 }
+*/
 
+export async function getusername() {
+    return client.query("SELECT username FROM Users LIMIT 1")
+}
+
+export function parafill() {
+    let resy = getusername();
+    console.log("para information gotten! It is "+resy);
+    return resy;
+    //return client.query("SELECT username FROM Users LIMIT 1")
+}
+
+/*
 exports.getusername = async function (){
 
     return client.query("SELECT username FROM Users LIMIT 1")
@@ -70,8 +104,8 @@ exports.getusername = async function (){
     //     }
     // });
 
-}
 
+/*
 exports.parafill = function (){
     // db_connect(); //connect to db then do this uwu
     let resy = getusername();
@@ -87,4 +121,4 @@ exports.parafill = function (){
 
 // module.exports = client;
 
-//let ownquery ="SELECT username FROM split LIMIT 1"
+//let ownquery ="SELECT username FROM split LIMIT 1" */
