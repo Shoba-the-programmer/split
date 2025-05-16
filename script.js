@@ -88,16 +88,22 @@ app.post('/login', async (req, res) => {
     }
 });
 
+/*
 app.get('/check-db', async (req, res) => {
   const isConnected = await online_db_connect();
   res.json({ success: isConnected });
+});
+*/
+
+//db connects already so just check to not get the client cant connect twice error
+app.get('/check-db', async (req, res) => {
+  res.json({ success: onlineClient ? true : false });
 });
 
 
 
 //test the online database created on render
 app.listen(port, function() {
-  online_db_connect();
   //db_connect();  //moved to here so express listens to both
   console.log('Online Split is running on ' + port);
 });

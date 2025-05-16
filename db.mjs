@@ -1,10 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 //database access file
 
 //const { Client } = require('pg');
 //import { Client } from '..node_modules/pg';
 import { Client } from 'pg';
-import dotenv from 'dotenv';
-dotenv.config();
+
 
 let un = null;
 
@@ -45,7 +47,7 @@ export function online_db_connect() {
     })
 }
 */
-
+/*
 export async function online_db_connect() {
     try {
         await onlineClient.connect();
@@ -55,6 +57,22 @@ export async function online_db_connect() {
         console.error("Failed to connect to Database:", error);
         return false; // Indicates failure
     }
+}
+*/
+
+//ah so only do it once to continue
+(async () => {
+    try {
+        await onlineClient.connect();
+        console.log("✅ Database Connected Successfully!");
+    } catch (error) {
+        console.error("❌ Failed to connect to Database:", error);
+    }
+})(); //im keeping the emojis >:P, let me have a little whimsy in this exhausting coding + bug fixing period. its been like 7 hours straight
+
+// Remove the connect() call from the function
+export async function online_db_connect() {
+    return onlineClient ? true : false;
 }
 
 /*
