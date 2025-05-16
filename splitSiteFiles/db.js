@@ -1,5 +1,7 @@
 //const { Client } = require('pg');
-import { Client } from './pg.js';
+//import { Client } from '..node_modules/pg';
+import { Client } from 'pg';
+
 let un = null;
 const client = new Client(
     {
