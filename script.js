@@ -21,7 +21,7 @@ import { getusername } from './db.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import { db_connect } from './db.mjs';
+//import { db_connect } from './db.mjs';
 import { online_db_connect } from './db.mjs';
 import userRoute from './routes/user.route.js'
 
@@ -45,7 +45,7 @@ app.post('/login', async (req, res) => {
     try {
       // Use a parameterized query to avoid SQL injection.
       const query = 'SELECT username, password FROM Users WHERE username = $1 AND password = $2';
-      const { rows } = await client.query(query, [username, password]);
+      const { rows } = await onlineClient.query(query, [username, password]);
   
       if (rows.length > 0) {
         // Return the matching user record
@@ -65,7 +65,7 @@ app.post('/login', async (req, res) => {
     try {
       // Use a parameterized query to avoid SQL injection.
       const query = 'SELECT username, password FROM Users WHERE username = $1 AND password = $2';
-      const { rows } = await client.query(query, [username, password]);
+      const { rows } = await onlineClient.query(query, [username, password]);
   
       if (rows.length > 0) {
         // Return the matching user record
