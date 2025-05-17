@@ -111,7 +111,7 @@
             const user_row = document.createElement("p");
             // Concatenate row values with a space between each item
             user_row.textContent = row.user_id + " " + row.username + " " + row.password;
-            userdataContainer.appendChild(p);
+            userdataContainer.appendChild(user_row);
           });
         } else {
           alert("Failed to retrieve user data: " + (data.message || ""));
