@@ -194,7 +194,7 @@ export async function insertUser(username, password) {
     //function to check if the username exists in the system, used for creating accountz
     const doesUNexist = "SELECT username from Users WHERE username=$1";
     try{
-      const result = await onlineClient.query(doesUNexist,unny);
+      const result = await onlineClient.query(doesUNexist,[unny]);
       console.log("username searched for");
       return result.rows;
     } catch(error){}
