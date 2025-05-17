@@ -122,7 +122,7 @@ app.post('/create-user', async (req, res) => {
 });
 
 app.get('/allusers', async (req,res) => {
-  const { userdata } = await getUserInfo();
+  const userdata  = await getUserInfo();
   if (userdata && userdata.length > 0) {
     // Return the matching user record
     //to get multiple rows check if the db query is successful AND if multiple rows exist
