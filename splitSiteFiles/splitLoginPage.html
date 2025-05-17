@@ -18,7 +18,6 @@
     <p> Or <button onclick="trigger_CA_overlay()"> Create Account </button> if you don't have one yet :]</p>
 </div>
 
-
 <!-- CREATE ACCOUNT OVERLAY-->
 <div id="create_account_overlay">
 <!-- this will act as a pop up overlay called when the create account button is used-->
@@ -32,7 +31,6 @@
         </form> 
     </div>
 </div>
-
 
 <script>
     async function login(event) {
@@ -95,6 +93,36 @@
     }
 
     </script>    
+
+<!--- show all users section for testing!-->
+<div id="show_users"></div>
+<script>
+    async function showallusers(){
+    try {
+        const response = await fetch('/allusers'); // Calls the allusers endpoint api code in server.js
+        const data = await response.json(); //await the respones eee
+
+        if (data.success) {
+          const userdataContainer= document.getElementById("show_users");
+          userdataContainer.innerHTML = ""; // Clear any existing content
+          
+          data.user.forEach(row => {
+            //for each row in the Get All Users result, generate a p element in the div
+            const user_row = document.createElement("p");
+            // Concatenate row values with a space between each item
+            user_row.textContent = row.user_id + " " + row.username + " " + row.password;
+            userdataContainer.appendChild(p);
+          });
+        } else {
+          alert("Failed to retrieve user data: " + (data.message || ""));
+        }
+    } catch (error) {
+        console.error("Error fetching userdata:", error);
+        alert("An error occurred while fetching the user data!");
+    }
+    }
+</script>
+<button onclick="showAllUsers()">Load 'Users' Table</button>
 
 </body>
 </html>

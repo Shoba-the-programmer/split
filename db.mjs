@@ -175,6 +175,21 @@ export async function insertUser(username, password) {
     }
   }
 
+  export async function getUserInfo(){
+    //function to get all users , to be shown in the login database and move to the dev tools screen later
+    //const getallusersquery = "SELECT * FROM Users" ; -redundant
+    try{
+      const result = await onlineClient.query("SELECT * FROM Users");
+      console.log("All users acquired");
+      return result.rows;
+    }catch(error){
+        //if there's an error getting the user info tell it
+        console.error("Error getting user table information", error);
+        return null;
+    }
+
+  }
+
 //export {defineUsersTable};
 //export {insertUser};
 

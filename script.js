@@ -7,7 +7,7 @@ import express from 'express';
 import path from 'node:path';
 //import { fileURLToPath } from 'url';
 const app = express();
-import { defineUsersTable, insertUser } from './db.mjs';
+import { defineUsersTable, insertUser , getUserInfo} from './db.mjs';
 //const pg = require('pg'); //for database work
 import pg from 'pg';
 //const {db_connect} = require('./splitSiteFiles/db.mjs');
@@ -26,6 +26,7 @@ const __dirname = dirname(__filename);
 //import { db_connect } from './db.mjs';
 import { online_db_connect } from './db.mjs';
 import userRoute from './routes/user.route.js'
+import { get } from 'node:http';
 
 const port = process.env.PORT || 8080;
 
@@ -90,8 +91,7 @@ app.post('/create-user', async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error." });
   }
 });
-
-  
+ 
   app.post('/getusername', async (req, res) => {
     const { username, password } = req.body;
   
@@ -121,6 +121,17 @@ app.post('/create-user', async (req, res) => {
     }
 });
 
+app.get('/allusers', async (req,res) => {
+  const { userdata } = await getUserInfo();
+  if (userdata && userdata.length > 0) {
+    // Return the matching user record
+    //to get multiple rows check if the db query is successful AND if multiple rows exist
+    res.json({ success: true, user: userdata });
+  } else {
+    res.json({ success: false, message: "No users found." });
+  }
+});
+
 /*
 app.get('/check-db', async (req, res) => {
   const isConnected = await online_db_connect();
@@ -138,7 +149,7 @@ app.get('/check-db', async (req, res) => {
 //test the online database created on render
 app.listen(port, function() {
   //db_connect();  //moved to here so express listens to both
-  console.log('Online Split is running on ' + port);
+  console.log('Online Split Server is running on ' + port);
 });
 
 /*
