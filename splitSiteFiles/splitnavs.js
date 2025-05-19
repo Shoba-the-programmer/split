@@ -4,7 +4,7 @@ var loginUrl = "splitLoginPage.html";
 var publishUrl = "splitPublishPage.html";
 var writerPortalUrl = "splitWritersPage.html";
 var chapterWritingUrl = "bookchapterpage.html";
-
+var adminUrl = "devtools.html";
 var test_username = "sigma";
 var test_password = "zhetaXDC"
 
@@ -59,4 +59,33 @@ function create_account_check(){
     let pass1 = "";
     let pass2 = "" ;
 
+}
+
+function toggle_dt_password(){
+    let dtPassArea = document.getElementsByClassName("dt_password_entry")[0];
+    if (dtPassArea.style.display == "none"){
+        dtPassArea.style.display = "block";
+    } else {
+        dtPassArea.value = "";
+        dtPassArea.style.display = "none";
+    }
+
+}
+
+let pass="r00t";
+
+function check_dtpass(){
+    let dt_input = document.getElementsByClassName("dt_pass_entry");
+    if (dt_input.value===pass){
+        //clear the password and close entry box
+        dt_input.value = "";
+        toggle_dt_password();
+        //goto dev tools page
+        gotoWebpage(adminUrl);
+    } else {
+        alert("wrong");
+        dt_input.value = "";
+        toggle_dt_password();
+
+    }
 }

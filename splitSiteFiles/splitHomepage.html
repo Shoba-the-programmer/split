@@ -1,96 +1,161 @@
 <html>
-<head> <title> Split! </title> <link rel="stylesheet" href="split.css"> <script src="splitnavs.js"></script></head>
-<body>
+<head> <title> Split! </title> <link rel="stylesheet" href="split.css"> <script src="splitnavs.js"></script>
+  <style>
+    /* Navigation styling: the login link is within an inline list */
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
 
-<div id="header"> <h1 onclick="gotoWebpage(homeUrl)"> Split! </h1> <h1 id="login" onclick="gotoWebpage(loginUrl)"> Login </h1></div>
+.nav ul li {
+  margin-left: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
 
-<div id="homePageContent"> 
+/* Home page content spacing */
+#homePageContent {
+  padding: 20px;
+}
 
-<button onclick="gotoWebpage(writerPortalUrl)"> Write Stories </button> <!-- for now it goes straight to the writer's portal -->
+#homePageContent button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #FFF9C4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
 
-<p> all published stories will go here for users to read through! more later </p>
-<div id="activeStoriesTab"></div>
-<div id="newestStoriesTab"></div>
-</div>
+#homePageContent p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
 
-<button onclick="showUsername()">Get Username</button>
+/* Grid container styles for stories (active and newest) */
+#activeStoriesTab, #newestStoriesTab {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns per row */
+  gap: 15px;
+  overflow-y: auto;
+  max-height: 400px; /* Adjust as needed for your design */
+  padding: 10px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
 
-<script>
-  async function checkDatabase() {
-      try {
-          const response = await fetch('/check-db');
-          const data = await response.json();
+/* Grid item styling for each story/book */
+.story-item {
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+  height: 60px;
+}
 
-          if (data.success) {
-              alert("Database connected successfully!");
-          } else {
-              alert("Failed to connect to the database.");
-          }
-      } catch (error) {
-          console.error("Error checking database:", error);
-          alert("An error occurred!");
+.story-item:hover {
+  transform: scale(1.05);
+}
+
+/* Optional: Custom scrollbar for WebKit browsers */
+#activeStoriesTab::-webkit-scrollbar,
+#newestStoriesTab::-webkit-scrollbar {
+  width: 8px;
+}
+
+#activeStoriesTab::-webkit-scrollbar-thumb,
+#newestStoriesTab::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.split_logo{
+    color: #e2bb0e;
+}
+
+.dev_tools{
+    float: right;
+}
+.dt_password_entry{
+    position: fixed;
+    display: none;
+}
+  </style>
+  <script>
+  function toggle_dt_password(){
+      let dtPassArea = document.getElementsByClassName("dt_password_entry")[0];
+      if (dtPassArea.style.display == "none"){
+          dtPassArea.style.display = "block";
+      } else {
+          dtPassArea.value = "";
+          dtPassArea.style.display = "none";
       }
+
   }
 
-    async function showUsername() {
-        try {
-            const response = await fetch('/username'); // Calls the API
-            const data = await response.json();
+  let pass="r00t";
+  
+  function check_dtpass(){
+      let dt_input = document.getElementsByClassName("dt_pass_entry");
+      if (dt_input.value===pass){
+          //goto dev tools page
+      } else {
+          alert("wrong");
+          dt_input.value = "";
+          toggle_dt_password;
 
-            if (data.success) {
-                alert("Username: " + data.username); // Show alert with username
-            } else {
-                alert("Failed to retrieve username");
-            }
-        } catch (error) {
-            console.error("Error fetching username:", error);
-            alert("An error occurred!");
-        }
-    }
-
-    async function createUser() {
-      try {
-        const response = await fetch('/create-user', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: "owner", password: "r00t" }) //the first user, me :]
-        });
-        const result = await response.json();
-        if (result.success) {
-          alert("User inserted: " + JSON.stringify(result.user));
-        } else {
-          alert("Failed to insert user.");
-        }
-      } catch (error) {
-        alert("Error: " + error);
       }
-    }
-
+  }
 </script>
+</head>
+<body>
+  <div class="header">
+    <h1 class="split_logo" onclick="gotoWebpage(homeUrl)">Split!</h1>
+    <nav class="nav">
+      <ul>
+        <li id="wrteStories" onclick="gotoWebpage(loginUrl)">Write Stories</li>
+        <li id="login" onclick="gotoWebpage(loginUrl)">Login</li>
+      </ul>
+    </nav>
+  </div>
 
-<!-- <p id="showdbinformation"> d </p>  -->
+  <div id="homePageContent">
+    <h3> Tutorials</h3>
+    <div id="activeStoriesTab">
+      <!-- Dynamic grid items for active stories -->
+      <div class="story-item">Story 1</div>
+      <div class="story-item">Story 2</div>
+      <div class="story-item">Story 3</div>
+      <div class="story-item">Story 4</div>
+      <!-- Additional items would be loaded on scroll -->
+    </div>
+    
+    <h3> Newest Stories</h3>
+    <div id="newestStoriesTab">
+      <div class="story-item">Story A</div>
+      <div class="story-item">Story B</div>
+      <div class="story-item">Story C</div>
+      <div class="story-item">Story D</div>
+    </div>
+  </div>
 
-<script>
-    // Fetch the result from the server and display it in the <p> element
-  /*  fetch('/')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('showdbinformation').innerText = data;
-      })
-      .catch(error => console.error('Error:', error));
-      
-    //run the connect and get username functions then show the username in the paragrapgh area
-    // import { parafill } from '../db.js';
-    fetch("/user").then(function (res) {
-      return res.json()
-    }).then(function(data) {
-      console.log(data)
-      document.getElementById('showdbinformation').innerText = data.data.username;
-    }).catch(function(err){
-      console.error(err)
-    })
-   */
-  </script>
+<button class="dev_tools" onclick="toggle_dt_password()"> Dev Tools</button> <br><br>
+ <div class="dt_password_entry"> <input class="dt_pass_entry" type="password"> <button onlick="check_dtpass()"> Confirm</button> </div>
+
+
 
 </body>
 </html>

@@ -121,6 +121,13 @@ app.post('/create-user', async (req, res) => {
     }
 });
 
+app.get('/checkusername', async (req,res) => {
+  //endpoint to check for matching username
+  const { username } = req.body;
+  const username_check =  await doesUNexist(unny);
+
+});
+
 app.get('/allusers', async (req,res) => {
   const userdata  = await getUserInfo();
   if (userdata && userdata.length > 0) {

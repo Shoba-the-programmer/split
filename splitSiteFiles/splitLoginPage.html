@@ -63,6 +63,30 @@
           document.getElementById("alert").innerText = "Error during login: " + error;
         }
       }
+      async function doesUNexist(unny){
+        try {
+        const response = await fetch('/allusers'); // Calls the allusers endpoint api code in server.js
+        const data = await response.json(); //await the respones eee
+
+        if (data.success) {
+          const userdataContainer= document.getElementById("show_users");
+          userdataContainer.innerHTML = ""; // Clear any existing content
+          
+          data.user.forEach(row => {
+            //for each row in the Get All Users result, generate a p element in the div
+            const user_row = document.createElement("p");
+            // Concatenate row values with a space between each item
+            user_row.textContent = row.user_id + " " + row.username + " " + row.password;
+            userdataContainer.appendChild(user_row);
+          });
+        } else {
+          alert("Failed to retrieve user data: " + (data.message || ""));
+        }
+    } catch (error) {
+        console.error("Error fetching userdata:", error);
+        alert("An error occurred while fetching the user data!");
+    }
+      }
 
       async function createNewUser() {
         let un = document.getElementById("ca_username").value;
