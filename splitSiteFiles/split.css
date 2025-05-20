@@ -55,6 +55,27 @@ body {
   cursor: pointer;
 }
 
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.nav ul li {
+  margin-left: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+
+.split_logo{
+  color: #e2bb0e;
+}
+
 
 /* a thin border to mimic sleekness, thin lines are all the rage now *\
 button {
@@ -65,9 +86,12 @@ button {
 }
 */
 
-/*login page content*/
-#loginInfo{
-  
+.dev_tools{
+  float: right;
+}
+.dt_password_entry{
+  position: fixed;
+  display: none;
 }
 
 

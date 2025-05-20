@@ -1,12 +1,152 @@
 <html>
-<head> <title> Split! Writer's Portal</title> <link rel="stylesheet" href="split.css"><script src="splitnavs.js"></script></head>
-<body>
-    <header> <h3 onclick="gotoWebpage(homeUrl)">Split Writer's Portal</h3> </header>
-    <p> Placeholder! this is where th e general author information will be</p>
 
-    <BUTTON onclick="gotoWebpage(chapterWritingUrl)"> new story</BUTTON>
+<head>
+    <title> Split! Writer's Portal</title>
+    <link rel="stylesheet" href="split.css">
+    <script src="splitnavs.js"></script>
+
+    <script>
+                let stories = [{ name: "benji", status: "published" }, { name: "jimbo", status: "published" }, { name: "original", status: "in progress" }, { name: "prank", status: "published" }];
+        //automatically global! awesome
+        function show_stories(stories) {
+            stories.forEach(story => {
+                //for each story, create a line with it
+                const story_line = document.createElement("p");
+                // Concatenate row values with a space between each item
+                story_line.textContent = story.name + "\n" + story.status;
+                story_line.className = "story_bar";
+                writers_story_shower.appendChild(story_line);
+            });
+        }
+
+        function showThisStoryType(status, storylist) {
+            const story_holder = document.getElementById("writers_story_shower");
+            story_holder.innerHTML = "";
+            //get specific types of stories to show
+            storylist.forEach(story => {
+                if (status === "all" || story.status === status){
+                    const story_line = document.createElement("p");
+                    // Concatenate row values with a space between each item
+                    story_line.textContent = story.name + "\n" + story.status;
+                    story_line.className = "story_bar";
+                    story_holder.appendChild(story_line);
+                    const previewbtn = document.createElement("button");
+                    previewbtn.className = "prevbtn";
+                    previewbtn.innerHTML = "Preview";
+                    story_line.appendChild(previewbtn);
+                }
+
+            });
+        }
+
+///////////////////functions to call on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("DOM (non-crucial media data) is fully loaded! call the functs");
+            show_stories(stories);
+            createStoryDirectory()
+        });
+    </script>
+
+    <style>
+        .story_shower {
+            display: grid;
+            grid-template-columns: 1fr;
+           
+            background: linear-gradient(to bottom, rgb(248, 238, 86), deepskyblue);
+            /* Stylish gradient */
+            padding: 10px;
+            height: 60%;
+            width:80%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .story_bar {
+            padding: 5px;
+            /* Adds spacing inside each item */
+            border-bottom: 2px solid black;
+            /* Fix border issue */
+            background: aliceblue;
+            align-content: center;
+            border-radius: 7px;
+            /* Rounded edges */
+            transition: transform 0.2s ease-in-out;
+            /* Smooth animation effect */
+        }
+
+        .story_bar:hover {
+            transform: scale(1.02);
+            /* Slight hover effect */
+            background-color: #f0f8ff;
+            /* Slightly lighter hover color */
+        }
+
+        .userstorytab {
+            background-color: aquamarine;
+            border: 0px;
+
+        }
+
+        #new_story_btn {
+            float: right;
+        }
+
+        .prevbtn {
+            float:right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1 class="split_logo" onclick="gotoWebpage(homeUrl)">Split!</h1>
+        <nav class="nav">
+          <ul>
+            <li id="current_username">Username</li>
+            <li id="logout_btn">Logout</li>
+          </ul>
+        </nav>
+      </div>
+
+      <button onclick="showThisStoryType('all', stories)" class="userstorytab">Current Stories</button>
+    <button onclick="showThisStoryType('in progress', stories)" class="userstorytab">In Progress </button>
+    <button onclick="showThisStoryType('published', stories)" class="userstorytab"> Published</button>
+    <button id="new_story_btn" onclick="gotoWebpage(chapterWritingUrl)"> Create New Story</button>
+
+
+    <div id="writers_story_shower" class="story_shower">
+
+    </div>
+
     <!-- stories, new story button, media-->
-     <!-- onclick, show a story title popup, then create a directory in splitstories --> 
+    <!-- onclick, show a story title popup, then create a directory in splitstories -->
+
+    <script>
+        //active user functions
+        async function get_current_user() {
+            //get the current logged in user and the user id and work from there
+            try {
+            const ac_response = await fetch('/active-user');
+            if (!ac_response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+
+            const data = await ac_response.json(); //should get the user id and shld be able to call it will
+            //data.activeUser = id
+            return data.activeUser; //should return the id for use
+
+        } catch (error) {
+            console.error("Failed to fetch active user:", error);
+        }}
+        //call on page load
+        window.addEventListener("DOMContentLoaded", get_current_user);
+        let userid = get_current_user();
+        //then get the name
+        
+        //then get written stories
+
+    </script>
 </body>
 
 </html>

@@ -86,24 +86,24 @@ export function db_connect() {
 }
 */
 
-  /*
+/*
 exports.online_db_connect = function() {
-    onlineClient.connect().then(function () {
-        console.log("Database Connected Successfully!")
+  onlineClient.connect().then(function () {
+      console.log("Database Connected Successfully!")
 
-    }).catch(function (err) {
-        console.log(err, "Failed to connect to Database")
-    })
+  }).catch(function (err) {
+      console.log(err, "Failed to connect to Database")
+  })
 }
-    
+  
 
 exports.db_connect = function() {
-    client.connect().then(function () {
-        console.log("Database Connected Successfully!")
+  client.connect().then(function () {
+      console.log("Database Connected Successfully!")
 
-    }).catch(function (err) {
-        console.log(err, "Failed to connect to Database")
-    })
+  }).catch(function (err) {
+      console.log(err, "Failed to connect to Database")
+  })
 }
 */
 
@@ -121,6 +121,10 @@ export async function getusername() {
         console.error("Error fetching username:", error);
         return null;
     }
+}
+
+export async function getCurrentUsersInformation(){
+
 }
 
 /*
@@ -151,55 +155,115 @@ export async function defineUsersTable() {
       );
     `;
     try {
-      await onlineClient.query(createUsersTableQuery);
-      console.log("Users table created (or already exists).");
+        await onlineClient.query(createUsersTableQuery);
+        console.log("Users table created (or already exists).");
     } catch (error) {
-      console.error("Error creating Users table:", error);
+        console.error("Error creating Users table:", error);
     }
-  }
+}
+
+//plus the story table
+export async function defineStoryTable() {
+    const createStoryTableQuery = `
+      CREATE TABLE IF NOT EXISTS Stories (
+        storyID SERIAL PRIMARY KEY,
+		user_id integer NOT NULL,
+		title VARCHAR(90) NOT NULL,
+		story_location VARCHAR(60),
+		story_description VARCHAR,
+		tags TEXT[],
+		status VARCHAR,
+		FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+    );
+    `;
+    try {
+        await onlineClient.query(createStoryTableQuery);
+        console.log("Story created (or already exists).");
+    } catch (error) {
+        console.error("Error creating Users table:", error);
+    }
+}
+
 
 export async function insertUser(username, password) {
     //this function shld insert a new user into the table post account creation
     const insertQuery = `
       INSERT INTO Users (username, password)
       VALUES ($1, $2)
+      ON CONFLICT (username)
+      DO NOTHING
       RETURNING *;
     `;
     try {
-      const result = await onlineClient.query(insertQuery, [username, password]);
-      console.log("Inserted user:", result.rows[0]);
-      return result.rows[0];
+        const result = await onlineClient.query(insertQuery, [username, password]);
+        console.log("Inserted user:", result.rows[0]);
+        return result.rows[0];
     } catch (error) {
-      console.error("Error inserting user:", error);
-      return null;
+        console.error("Error inserting user:", error);
+        return null;
     }
-  }
+}
 
-  export async function getUserInfo(){
+export async function getUserInfo() {
     //function to get all users , to be shown in the login database and move to the dev tools screen later
     //const getallusersquery = "SELECT * FROM Users" ; -redundant
-    try{
-      const result = await onlineClient.query("SELECT * FROM Users");
-      console.log("All users acquired");
-      return result.rows;
-    }catch(error){
+    try {
+        const result = await onlineClient.query("SELECT * FROM Users");
+        console.log("All users acquired");
+        return result.rows;
+    } catch (error) {
         //if there's an error getting the user info tell it
         console.error("Error getting user table information", error);
         return null;
     }
 
-  }
+}
 
-  export async function doesUNexist(unny){
+export async function getcurrentuser(id){
+    try {
+        const query = 'SELECT user_id , username FROM Users WHERE user_id = $1';
+        const result  = await onlineClient.query(query, [id]);
+        return result.rows;
+    } catch (error) {
+        //if there's an error getting the user info tell it
+        console.error("Error getting user table information", error);
+        return null;
+    }
+}
+
+export async function check_login_entry() {
+    try {
+        const query = 'SELECT username, password FROM Users WHERE username = $1 AND password = $2';
+        const result = await onlineClient.query(query, [username, password]);
+        console.log("matching login found");
+
+        return result.rows; // Returns an array of rows that match the criteria
+    } catch (err) {
+        console.error('Error checking login:', err);
+        // Rethrow the error so the route can catch it if needed
+        throw err;
+    }
+}
+
+export async function doesUNexist(unny) {
     //function to check if the username exists in the system, used for creating accountz
     const doesUNexist = "SELECT username from Users WHERE username=$1";
-    try{
-      const result = await onlineClient.query(doesUNexist,[unny]);
-      console.log("username searched for");
-      return result.rows;
-    } catch(error){}
-  }
+    try {
+        const result = await onlineClient.query(doesUNexist, [unny]);
+        console.log("username searched for");
+        return result.rows;
+    } catch (error) { }
+}
 
+export async function dev_queries(dev_query) {
+    try {
+        const result = await onlineClient.query(dev_query);
+        console.log("query executed");
+    } catch (error) {
+        console.error("Error occured while exectuing dev query:", error);
+        return null;
+    }
+}
 //export {defineUsersTable};
 //export {insertUser};
 
@@ -221,11 +285,11 @@ exports.getusername = async function (){
     //        /* app.get('/', (req, res) => {
     //             res.send(username);
     //         }); */
-    //         return username;
-    //     } else {
-    //         console.log("No users found.");
-    //     }
-    // });
+//         return username;
+//     } else {
+//         console.log("No users found.");
+//     }
+// });
 
 
 /*

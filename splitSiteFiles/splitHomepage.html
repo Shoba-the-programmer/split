@@ -2,21 +2,6 @@
 <head> <title> Split! </title> <link rel="stylesheet" href="split.css"> <script src="splitnavs.js"></script>
   <style>
     /* Navigation styling: the login link is within an inline list */
-.nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-
-.nav ul li {
-  margin-left: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
 
 /* Home page content spacing */
 #homePageContent {
@@ -82,51 +67,15 @@
   border-radius: 4px;
 }
 
-.split_logo{
-    color: #e2bb0e;
-}
-
-.dev_tools{
-    float: right;
-}
-.dt_password_entry{
-    position: fixed;
-    display: none;
-}
   </style>
-  <script>
-  function toggle_dt_password(){
-      let dtPassArea = document.getElementsByClassName("dt_password_entry")[0];
-      if (dtPassArea.style.display == "none"){
-          dtPassArea.style.display = "block";
-      } else {
-          dtPassArea.value = "";
-          dtPassArea.style.display = "none";
-      }
 
-  }
-
-  let pass="r00t";
-  
-  function check_dtpass(){
-      let dt_input = document.getElementsByClassName("dt_pass_entry")[0];
-      if (dt_input.value===pass){
-          //goto dev tools page
-      } else {
-          alert("wrong");
-          dt_input.value = "";
-          toggle_dt_password;
-
-      }
-  }
-</script>
 </head>
 <body>
   <div class="header">
     <h1 class="split_logo" onclick="gotoWebpage(homeUrl)">Split!</h1>
     <nav class="nav">
       <ul>
-        <li id="wrteStories" onclick="gotoWebpage(loginUrl)">Write Stories</li>
+        <li id="writeStories" onclick="gotoWebpage(writerPortalUrl)">Write Stories</li>
         <li id="login" onclick="gotoWebpage(loginUrl)">Login</li>
       </ul>
     </nav>

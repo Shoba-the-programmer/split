@@ -1,10 +1,43 @@
 <html>
 <head> <title> Split! </title> <link rel="stylesheet" href="split.css"><script src="splitnavs.js"></script> </head>
+<style>
+  body {
+    background-color: black;
+  }
+
+ #login_section{
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 50vh; 
+  }
+
+    #loginInfo{
+      width: 50%;
+      margin: auto;
+      border-color: blanchedalmond;
+      border: 5px;
+      height: auto;
+      padding: 7px;
+      padding-left: 8px;
+      box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.5);;
+    }
+
+</style>
 <body>
 
-<div id="header"> <h1 onclick="gotoWebpage(homeUrl)"> Split! </h1> </div>
+<div class="header">
+  <h1 class="split_logo" onclick="gotoWebpage(homeUrl)">Split!</h1>
+  <nav class="nav">
+    <ul>
+      <li id="wrteStories" onclick="gotoWebpage(writerPortalUrl)">Write Stories</li>
+      <li id="login" onclick="gotoWebpage(loginUrl)">Login</li>
+    </ul>
+  </nav>
+</div>
 
 <!-- LOGIN SECTION -->
+<div id="login_section">
 <div id="loginInfo"> 
     <h2> Login</h2>
     <input class="accountInfo_entry" id="login_username" type="text" placeholder="Username" required> <br>
@@ -12,7 +45,7 @@
     <input class="accountInfo_entry" id="login_password" type="password" placeholder="Password" required> <br>
     <p id="alert"></p>
 
-    <button> Login </button> <!-- for now it goes straight to the writer's portal -->
+    <button onclick="login(event)"> Login </button> <!-- for now it goes straight to the writer's portal -->
     <br>
 
     <p> Or <button onclick="trigger_CA_overlay()"> Create Account </button> if you don't have one yet :]</p>
@@ -23,6 +56,7 @@
 <!-- this will act as a pop up overlay called when the create account button is used-->
     <div id="createAccount_data">
         <h3> Create an Account</h3>
+        <button onclick="trigger_CA_overlay()"> Back </button>
         <form onsubmit="createNewUser()">
         <input class="accountInfo_entry" id="ca_username" type="text"  placeholder="Username" required> <br> <br>
         <input class="accountInfo_entry" id="ca_pass" type="password"  placeholder="Password" required> <br> <br>
@@ -31,38 +65,42 @@
         </form> 
     </div>
 </div>
+</div>
 
 <script>
-    async function login(event) {
-        event.preventDefault(); // Prevent the form from submitting the traditional way
+  async function login(event) {
+      event.preventDefault(); // Prevent the form from submitting the traditional way
+      
+      // Get values from the input fields
+      const username = document.getElementById("login_username").value;
+      const password = document.getElementById("login_password").value;
+      
+      try {
+        // Send a POST request to the "/login" endpoint
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+      
+        const result = await response.json();
         
-        // Get values from the input fields
-        const username = document.getElementById("login_username").value;
-        const password = document.getElementById("login_password").value;
-        
-        try {
-          // Send a POST request to the "/login" endpoint
-          const response = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-          });
-        
-          const result = await response.json();
-          
-          // Check the response and update the alert <p>
-          if (result.success) {
-            document.getElementById("alert").innerText = "Login successful!";
-            // Optionally redirect to another page:
-            // window.location.href = "/writer-portal";
-          } else {
-            document.getElementById("alert").innerText = "Login failed. Please try again.";
-          }
-        } catch (error) {
-          console.error("Error during login:", error);
-          document.getElementById("alert").innerText = "Error during login: " + error;
+        // Check the response and update the alert <p>
+        if (result.success) {
+          document.getElementById("alert").innerText = "Login successful! " + result.message + " " + result.user.username + "with ID "+ result.activeUser;
+          //active user id checked?
+          //then goto writers portal
+          gotoWebpage(writerPortalUrl);
+        } else {
+          document.getElementById("alert").innerText = "Login failed. Please try again.";
         }
+      } catch (error) {
+        console.error("Error during login:", error);
+        document.getElementById("alert").innerText = "Error during login: " + error;
       }
+    }
+
+
       async function doesUNexist(unny){
         try {
         const response = await fetch('/allusers'); // Calls the allusers endpoint api code in server.js

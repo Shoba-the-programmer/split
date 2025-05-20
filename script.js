@@ -3,11 +3,12 @@
 //original code repurposed from the contributor 'jrichardsz' on StackOverflow
 //const express = require('express');
 import express from 'express';
+import session from 'express-session';
 //const path = require('path');
 import path from 'node:path';
 //import { fileURLToPath } from 'url';
 const app = express();
-import { defineUsersTable, insertUser , getUserInfo} from './db.mjs';
+import { defineUsersTable, insertUser , getUserInfo, defineStoryTable, getcurrentuser, dev_queries} from './db.mjs';
 //const pg = require('pg'); //for database work
 import pg from 'pg';
 //const {db_connect} = require('./splitSiteFiles/db.mjs');
@@ -31,7 +32,18 @@ import { get } from 'node:http';
 const port = process.env.PORT || 8080;
 
 defineUsersTable(); //on server startup, call the create table function from the db file
+defineStoryTable(); //same for the story table
+//quick dev queries whilst the dev tool section disagrees with me
+dev_queries("DELETE FROM Users WHERE username = 'nerdalert'");
+dev_queries("ALTER TABLE Users ADD CONSTRAINT unique_username UNIQUE(username);");
 
+//user sessions
+app.use(session({
+  secret: 'your-very-secret-string',  // replace this with a strong secret key
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // Set secure: true in production with HTTPS
+}));
 
 // make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname+"/splitSiteFiles"));
@@ -49,34 +61,48 @@ app.use(express.urlencoded({ extended: true }));
 // Endpoint to check login credentials
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-  
     try {
-      // Use a parameterized query to avoid SQL injection.
-      const query = 'SELECT username, password FROM Users WHERE username = $1 AND password = $2';
-      const { rows } = await onlineClient.query(query, [username, password]);
-  
-      if (rows.length > 0) {
-        // Return the matching user record
-        res.json({ success: true, user: rows[0] });
+      const { username, password } = req.body;  // Now req.body will be defined
+    /*  if (!username || !password) {
+        return res.status(400).json({ success: false, message: "Username and password are required." });
+      } */
+      const user = await check_login_entry(username, password);
+      if (user && user.length > 0) {
+        // Successful login: return the first matching record
+        // + make them the active user and goto the login_page
+        req.session.activeUser = rows[0].user_id;
+        console.log("Active user set:", req.session.activeUser);
+
+        res.json({ success: true, user: user[0] , message: "Welcome" , activeuser: req.session.activeUser});
+        
       } else {
-        res.json({ success: false });
+        res.json({ success: false, message: "Invalid credentials." });
       }
     } catch (err) {
-      console.error('Error checking login:', err);
-      res.status(500).json({ error: 'Internal server error' });
+      console.error("Error in /login:", err);
+      res.status(500).json({ success: false, message: "Internal server error." });
     }
   });
 
-// insert new user endpoint
-app.post('/create-user', async (req, res) => {
-  const { username, password } = req.body;
-  const user = await insertUser(username, password);
-  if (user) {
-    res.json({ success: true, user });
-  } else {
-    res.status(500).json({ success: false, message: "Failed to insert user." });
-  }
-});
+  app.get('/logout', (req, res) => {
+    
+    // Destroy the entire session on logout to be safe
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Session destruction error:", err);
+        return res.status(500).json({ success: false, message: "Logout failed." });
+      }
+      res.json({ success: true, message: "Logged out successfully." });
+    });
+  });
+
+  app.get('/active-user', (req, res) => {
+    if (req.session.activeUser) {
+      res.json({ success: true, activeUser: req.session.activeUser });
+    } else {
+      res.json({ success: false, activeUser: null });
+    }
+  });
 
 app.post('/create-user', async (req, res) => {
   try {
@@ -109,6 +135,19 @@ app.post('/create-user', async (req, res) => {
     } catch (err) {
       console.error('Error checking login:', err);
       res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  app.post('/getusernamebyid', async (req, res) => {
+    const {currentID} = req.body;
+    const curr_user = await getcurrentuser(currentID);
+
+    if (curr_user && curr_user.length >0){
+      //if a user row was returned, use it
+      //const current_name = curr_user[0].username;
+      res.json({ success: true, user: curr_user[0].username });
+    } else {
+      res.json({ success: false, message: "User not found" });
     }
   });
 
