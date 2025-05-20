@@ -36,6 +36,7 @@ defineStoryTable(); //same for the story table
 //quick dev queries whilst the dev tool section disagrees with me
 //dev_queries("DELETE FROM Users WHERE username = 'nerdalert'");
 //dev_queries("ALTER TABLE Users ADD CONSTRAINT unique_username UNIQUE(username);");
+dev_queries("ALTER TABLE Users ADD COLUMN story_text TEXT");
 
 //user sessions
 app.use(session({
@@ -185,6 +186,18 @@ app.get('/check-db', async (req, res) => {
   res.json({ success: isConnected });
 });
 */
+
+app.get('/curr_userstories', async (req, res) => {
+  try {
+    // Query the story table for the story id, title, and status
+    const result = await onlineClient.query("SELECT storyid, title, status FROM Stories WHERE user_id = $1");
+    res.json({ success: true, stories: result.rows });
+  } catch (error) {
+    console.error("Error fetching stories:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 
 //db connects already so just check to not get the client cant connect twice error
 app.get('/check-db', async (req, res) => {

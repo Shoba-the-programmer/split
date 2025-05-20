@@ -264,48 +264,25 @@ export async function dev_queries(dev_query) {
         return null;
     }
 }
-//export {defineUsersTable};
-//export {insertUser};
 
-/*
-exports.getusername = async function (){
-
-    return client.query("SELECT username FROM Users LIMIT 1")
-    //      function (err, result) {
-    //     if (err) throw err;
-    //     //console.log(result);
-    //     //okay okay so the result inaan object, the username is 0
-    //     //console.log(result?.rows);
-    //     console.log("result is " + result.rows[0].username);
-
-    //     if (result?.rows?.length > 0) {
-    //         const username = result.rows[0].username;
-    //         console.log(username);
-
-    //        /* app.get('/', (req, res) => {
-    //             res.send(username);
-    //         }); */
-//         return username;
-//     } else {
-//         console.log("No users found.");
-//     }
-// });
-
-
-/*
-exports.parafill = function (){
-    // db_connect(); //connect to db then do this uwu
-    let resy = getusername();
-    console.log("para information gotten! It is "+resy);
-    return resy;
+export async function savenewstory(storytitle,storytext){
+    try {
+        letinsertquery = "INSERT INTO Stories (user_id,title,story_text), VALUES (1,$1,$2)";
+        const result = await onlineClient.query(query, [storytitle,storytext]);
+        console.log("query executed");
+    } catch (error) {
+        console.error("Error occured while exectuing dev query:", error);
+        return null;
+    }
 }
 
-// module.exports = {parafill};  //export test
-
-// db_connect(); //connect to db then do this uwu
-// getusername(); //get the user ueer function
-// route should be "/users"
-
-// module.exports = client;
-
-//let ownquery ="SELECT username FROM split LIMIT 1" */
+export async function callstories(){
+    try {
+       let allstories = "SELECT * FROM Stories";
+        const result = await onlineClient.query(allstories);
+        console.log("query executed");
+    } catch (error) {
+        console.error("Error occured while exectuing dev query:", error);
+        return null;
+    }
+}

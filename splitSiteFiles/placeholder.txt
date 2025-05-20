@@ -1,0 +1,38 @@
+[[Introduction]]:
+Hello! This Welcome to the Split Interactive Story tutorial!
+An Interactive Story functions by accepting some form of text input from the User.
+Split mainly operates via providing clickable choices to the user like this!
+
+[[Choice 1]]
+[[Choice 2]]
+
+[[Choice 1]]:
+You chose choice 1!
+[[Continue]]
+
+[[Choice 2]]:
+You chose choice 2!
+[[Continue]]
+
+[[Continue]]:
+In addition to making chocies through clicking, stories can branch based on player stats!
+Player stats can be set like so: > + set Player_stat + attribute name + attribute amount
+
+>set attribute coins 0
+
+Player stats can be things like the player's money, health, social sttributes or even relationship points with other characters!
+
+>>Continue
+
+Also, if you think a scene has been going on for too long, you can break if up with a regular continue and put the rest of the text on a new page!
+Additionally, you can allow users make choices that occur within the same scene through
+[passage links]
+
+[passage links]:
+Which, give writers the option to add extra bits within the story.
+
+
+
+
+
+

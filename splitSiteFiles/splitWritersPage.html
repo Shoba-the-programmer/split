@@ -6,7 +6,7 @@
     <script src="splitnavs.js"></script>
 
     <script>
-                let stories = [{ name: "benji", status: "published" }, { name: "jimbo", status: "published" }, { name: "original", status: "in progress" }, { name: "prank", status: "published" }];
+        let stories = [{ name: "benji", status: "published" }, { name: "jimbo", status: "published" }, { name: "original", status: "in progress" }, { name: "prank", status: "published" }];
         //automatically global! awesome
         function show_stories(stories) {
             stories.forEach(story => {
@@ -24,7 +24,7 @@
             story_holder.innerHTML = "";
             //get specific types of stories to show
             storylist.forEach(story => {
-                if (status === "all" || story.status === status){
+                if (status === "all" || story.status === status) {
                     const story_line = document.createElement("p");
                     // Concatenate row values with a space between each item
                     story_line.textContent = story.name + "\n" + story.status;
@@ -39,7 +39,7 @@
             });
         }
 
-///////////////////functions to call on page load
+        ///////////////////functions to call on page load
         document.addEventListener("DOMContentLoaded", function () {
             console.log("DOM (non-crucial media data) is fully loaded! call the functs");
             show_stories(stories);
@@ -51,12 +51,12 @@
         .story_shower {
             display: grid;
             grid-template-columns: 1fr;
-           
+
             background: linear-gradient(to bottom, rgb(248, 238, 86), deepskyblue);
             /* Stylish gradient */
             padding: 10px;
             height: 60%;
-            width:80%;
+            width: 80%;
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             overflow: hidden;
@@ -93,7 +93,7 @@
         }
 
         .prevbtn {
-            float:right;
+            float: right;
         }
     </style>
 </head>
@@ -102,14 +102,15 @@
     <div class="header">
         <h1 class="split_logo" onclick="gotoWebpage(homeUrl)">Split!</h1>
         <nav class="nav">
-          <ul>
-            <li id="current_username">Username</li>
-            <li id="logout_btn">Logout</li>
-          </ul>
+            <ul>
+                <li id="wrteStories" onclick="gotoWebpage(writerPortalUrl)">Write Stories</li>
+                <li id="login" onclick="gotoWebpage(loginUrl)">Login</li>
+            </ul>
         </nav>
-      </div>
+    </div>
 
-      <button onclick="showThisStoryType('all', stories)" class="userstorytab">Current Stories</button>
+
+    <button onclick="showThisStoryType('all', stories)" class="userstorytab">Current Stories</button>
     <button onclick="showThisStoryType('in progress', stories)" class="userstorytab">In Progress </button>
     <button onclick="showThisStoryType('published', stories)" class="userstorytab"> Published</button>
     <button id="new_story_btn" onclick="gotoWebpage(chapterWritingUrl)"> Create New Story</button>
@@ -127,25 +128,55 @@
         async function get_current_user() {
             //get the current logged in user and the user id and work from there
             try {
-            const ac_response = await fetch('/active-user');
-            if (!ac_response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+                const ac_response = await fetch('/active-user');
+                if (!ac_response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await ac_response.json(); //should get the user id and shld be able to call it will
+                //data.activeUser = id
+                return data.activeUser; //should return the id for use
+
+            } catch (error) {
+                console.error("Failed to fetch active user:", error);
             }
-
-            const data = await ac_response.json(); //should get the user id and shld be able to call it will
-            //data.activeUser = id
-            return data.activeUser; //should return the id for use
-
-        } catch (error) {
-            console.error("Failed to fetch active user:", error);
-        }}
+        }
         //call on page load
         window.addEventListener("DOMContentLoaded", get_current_user);
         let userid = get_current_user();
         //then get the name
-        
-        //then get written stories
 
+        async function loadStories() {
+            try {
+                const response = await fetch('/stories');
+                const data = await response.json();
+
+                if (data.success) {
+                    // Get the container element where the story titles will appear
+                    const user_story_holder = document.getElementById("writers_story_shower");
+                    user_story_holder.innerHTML = ""; // Clear any existing content
+
+                    // Loop over each story and create a <p> element for its title
+                    data.stories.forEach(story => {
+                        const user_story = document.createElement("p");
+                        // Here we're combining story id, title, and status in a text string.
+                        // Adjust this if you only want to display the title.
+                        user_story.textContent = `Title: ${story.title} | Status: ${story.status}`;
+                        user_story.addEventListener('çlick', function () {
+                            gotoWebpage(chapterWritingUrl);
+                        })
+                        user_story_holder.appendChild(user_story);
+                    });
+                } else {
+                    console.error("Failed to load stories:", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching stories:", error);
+            }
+        }
+
+        // Load the stories when the page's DOM is fully loaded
+        window.addEventListener("DOMContentLoaded", loadStories);
     </script>
 </body>
 

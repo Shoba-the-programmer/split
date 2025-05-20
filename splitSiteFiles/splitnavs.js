@@ -13,6 +13,7 @@ function gotoWebpage(page) {
     window.location.href = page;
 }
 
+
 function trigger_CA_overlay() {
     //calls or removes the ca overlay
     //let view = document.getElementById('create_account_overlay').style.display;
