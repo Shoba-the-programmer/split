@@ -231,9 +231,9 @@ export async function getcurrentuser(id){
     }
 }
 
-export async function check_login_entry() {
+export async function check_login_entry(username,password) {
     try {
-        const query = 'SELECT username, password FROM Users WHERE username = $1 AND password = $2';
+        const query = 'SELECT user_id,username, password FROM Users WHERE username = $1 AND password = $2';
         const result = await onlineClient.query(query, [username, password]);
         console.log("matching login found");
 

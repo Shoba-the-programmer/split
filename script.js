@@ -34,8 +34,8 @@ const port = process.env.PORT || 8080;
 defineUsersTable(); //on server startup, call the create table function from the db file
 defineStoryTable(); //same for the story table
 //quick dev queries whilst the dev tool section disagrees with me
-dev_queries("DELETE FROM Users WHERE username = 'nerdalert'");
-dev_queries("ALTER TABLE Users ADD CONSTRAINT unique_username UNIQUE(username);");
+//dev_queries("DELETE FROM Users WHERE username = 'nerdalert'");
+//dev_queries("ALTER TABLE Users ADD CONSTRAINT unique_username UNIQUE(username);");
 
 //user sessions
 app.use(session({
@@ -61,8 +61,9 @@ app.use(express.urlencoded({ extended: true }));
 // Endpoint to check login credentials
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
+
     try {
-      const { username, password } = req.body;  // Now req.body will be defined
+      //const { username, password } = req.body;  // Now req.body will be defined
     /*  if (!username || !password) {
         return res.status(400).json({ success: false, message: "Username and password are required." });
       } */
@@ -70,7 +71,7 @@ app.post('/login', async (req, res) => {
       if (user && user.length > 0) {
         // Successful login: return the first matching record
         // + make them the active user and goto the login_page
-        req.session.activeUser = rows[0].user_id;
+        req.session.activeUser = user[0].user_id;
         console.log("Active user set:", req.session.activeUser);
 
         res.json({ success: true, user: user[0] , message: "Welcome" , activeuser: req.session.activeUser});
@@ -98,9 +99,9 @@ app.post('/login', async (req, res) => {
 
   app.get('/active-user', (req, res) => {
     if (req.session.activeUser) {
-      res.json({ success: true, activeUser: req.session.activeUser });
+      res.json({ success: true, user: req.session.activeUser });
     } else {
-      res.json({ success: false, activeUser: null });
+      res.json({ success: false, user: null });
     }
   });
 

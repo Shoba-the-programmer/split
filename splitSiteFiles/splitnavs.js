@@ -93,6 +93,7 @@ function check_dtpass() {
     }
 }
 
+/*
 window.addEventListener('DOMContentLoaded', async function () {
     // GEt the userid/username from an exproted script function
 
@@ -114,3 +115,23 @@ window.addEventListener('DOMContentLoaded', async function () {
         console.error("Error fetching active user", error);
     }
 });
+*/
+
+window.addEventListener('DOMContentLoaded', async function () {
+    try {
+      const response = await fetch('/active-user');
+      const data = await response.json();
+
+      if (data.success) {
+        const logger = document.getElementById("login");
+        if (logger) {
+          logger.textContent = data.activeUser;
+          logger.addEventListener('click', function () {
+            gotoWebpage('/profile');
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching active user", error);
+    }
+  });
